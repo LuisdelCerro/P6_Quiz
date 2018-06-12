@@ -197,7 +197,7 @@ exports.randomCheck = (req,res,next) => {
         });
     }
     else{
-        let score=req.session.randomPlay.length;
+        let score=req.session.randomPlay.length+1;
         res.render('random_result',{
             score,
             result,
