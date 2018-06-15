@@ -157,8 +157,7 @@ if(req.session.randomPlay===undefined){
 
      let id_azar = Math.floor(Math.random()*quizzes.length);
      let quiz=quizzes[id_azar];
-     req.session.randomPlay.push(quiz.id);
-     let score=req.session.randomPlay.length-1;
+     let score=req.session.randomPlay.length;
      res.render('random_play', {
             score,
             quiz
@@ -194,10 +193,13 @@ exports.randomCheck = (req,res,next) => {
             result,
             answer
 
+
+
         });
     }
     else{
-        let score=req.session.randomPlay.length+1;
+        req.session.randomPlay.push(quiz.id);
+        let score=req.session.randomPlay.length;
         res.render('random_result',{
             score,
             result,
