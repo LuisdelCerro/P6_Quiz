@@ -193,8 +193,6 @@ exports.randomCheck = (req,res,next) => {
             result,
             answer
 
-
-
         });
     }
     else{
