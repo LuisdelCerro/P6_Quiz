@@ -137,7 +137,7 @@ router.get('/quizzes/:quizId(\\d+)/tips/:tipId(\\d+)/edit',
     tipController.adminOrAuthorRequired,
     tipController.edit);
 
-router.put('/quizzes/:quizId(\\+d)/tips/:tipId(\\d+)',
+router.put('/quizzes/:quizId/tips/:tipId',
     sessionController.loginRequired,
     tipController.adminOrAuthorRequired,
     tipController.update);
