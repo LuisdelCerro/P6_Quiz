@@ -1,7 +1,9 @@
 <h1>
     Random Play:
 </h1>
-
+<div class="right">
+    <small> (by <%= quiz.author ? quiz.author.username : "Anonymous" %>) </small>
+</div>
 <div>
     Successful answers = <span id="score"><%= score %></span>
 </div>
@@ -19,3 +21,13 @@
     </div>
 </form>
 
+<h1>
+    Tips:
+</h1>
+<h2>
+<% var tips = quiz.tips; %>
+<% var quizId = quiz.id; %>
+<% var quizAuthorId = quiz.authorId; %>
+</h2>
+<% include tips/index %>
+   

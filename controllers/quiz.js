@@ -231,14 +231,38 @@ exports.randomPlay = (req,res,next) => {
             }
 
             let id_azar = Math.floor(Math.random()*quizzes.length);
-            let quiz=quizzes[id_azar];
+            let quiz=randomload(id_azar);
             let score=req.session.randomPlay.length;
             res.render('random_play', {
-                score,
-                quiz
+                quiz,
+                score
+                
             });
         });
 };
+
+randomload=(quizId)=>{
+    models.quiz.findById(quizId, {
+        include: [
+            {model:models.tip,
+                include:[
+                {model:models.user, as:'author'}]},
+            {model: models.user, as: 'author'}
+        ]
+    })
+    .then(quiz => {
+        if (quiz) {
+            return quiz;
+
+        } else {
+            throw new Error('There is no quiz with id=' + quizId);
+        }
+    })
+    .catch(error => next(error));
+};
+
+
+
 
 
 // GET /quizzes/:quizId/check
