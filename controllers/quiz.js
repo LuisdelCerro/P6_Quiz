@@ -212,14 +212,20 @@ exports.play = (req, res, next) => {
     });
 };
 
-
+    
 exports.randomPlay = (req,res,next) => {
 
     if(req.session.randomPlay===undefined){
         req.session.randomPlay=[];
     }
     const whereOpt={"id":{[Sequelize.Op.notIn]:req.session.randomPlay}};
-    return models.quiz.findAll({where:whereOpt})
+    
+    return models.quiz.findAll({where:whereOpt,include: [
+        {model:models.tip,
+            include:[
+            {model:models.user, as:'author'}]},
+        {model: models.user, as: 'author'}
+    ]})
         .then(quizzes=>{
 
             if(quizzes.length===0){
@@ -231,37 +237,16 @@ exports.randomPlay = (req,res,next) => {
             }
 
             let id_azar = Math.floor(Math.random()*quizzes.length);
-            let quiz=randomload(id_azar);
             let score=req.session.randomPlay.length;
+            quiz=quizzes[id_azar];
             res.render('random_play', {
-                quiz,
-                score
+                score,
+                quiz
                 
             });
         });
+    
 };
-
-randomload=(quizId)=>{
-    models.quiz.findById(quizId, {
-        include: [
-            {model:models.tip,
-                include:[
-                {model:models.user, as:'author'}]},
-            {model: models.user, as: 'author'}
-        ]
-    })
-    .then(quiz => {
-        if (quiz) {
-            return quiz;
-
-        } else {
-            throw new Error('There is no quiz with id=' + quizId);
-        }
-    })
-    .catch(error => next(error));
-};
-
-
 
 
 
